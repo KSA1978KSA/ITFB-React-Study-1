@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
-import {KSALogo} from "./ksa-logo";
+import {Root} from "./root";
 
 ReactDOM.render(
 	[        
 		<div>
-			<KSALogo />
+			<Root />
 		</div>
 	],
 	document.querySelector('#root')
