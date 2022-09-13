@@ -1,13 +1,13 @@
 
 
-.root {
+.Root {
 	display: flex;
 	margin-top: 10vh; 
 	align-items: center;
 	justify-content: center;	
 }      
 
-.mainPanel {
+.MainPanel {
 	display: flex;
 	height: 60vh;
 	width: 60%;
@@ -15,9 +15,9 @@
 	flex-direction: column;/* выстраиваем элементы сверху вниз*/
 }
 
-.mainPanel__Result {
+.MainPanel__Result {
 	display: flex;
-	height: 20%;
+	height: 95px;
 	width: 100%;
 }
 
@@ -28,38 +28,71 @@
 	border-radius: 4px;
 	border-color: #c3c3c3;
 	border-style: solid;
-	filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+	/* filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25)); */
 }
 
-.mainPanel__MathExpr {
+.Panel_Container_Container {
 	display: flex;
-	height: 65%;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 10px;
+	border: none;
+	gap: 3px;
+	min-height: 50px;
+	overflow: auto;
+}
+
+.MainPanel__MathExpr {
+	display: flex;
+	/* height: 65%;*/
 	width: 100%;
 }
 
 
-.mainPanel__Calculation {
+.MainPanel__Calculation {
 	display: flex;
 	height: 15%;
 	width: 100%;	
+	align-items: center;
 	justify-content: right;	
 }
 
-.historyPanel {
+.HistoryPanel {
 	display: flex;
 	height: 60vh;
 	width: 40%;
 	margin-right: 50px;
 }
 
-
-
-.buttonWrapper {
-	display: flex;
-	flex-direction: column-reverse;
+.HistoryElement_Wrapper {
+	display: flex;	
+	flex-direction: column;/* выстраиваем элементы сверху вниз*/
+	gap: 5px;	
+	flex:1 1 auto;/* растягиваем по всем размерам родителя */	
 }
 
-.buttonCalc {    
+.HistoryElement {
+	display: flex;	
+	margin: 4px;
+	gap: 3px;
+
+}
+
+.HistoryElement:hover {
+	border: solid;
+	border-color: #c3c3c3;
+	border-width: 4px;
+	margin: 0px;
+}
+
+
+.ButtonWrapper {
+	display: flex;
+	flex-direction: column-reverse;
+	margin-top: 10px;
+}
+
+.ButtonCalc {    
     background-color: none;
     border: solid;
 	border-color: #c3c3c3;
@@ -74,12 +107,51 @@
 	height: 100%;
 	margin-bottom: 10px;
 	margin-right: 10px;
-	filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+	/* filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25)); */
 }
 
-.buttonCalc:hover {    
+.ButtonCalc:hover {    
     background-color: #7a7c7a;
     border: none;
     color: white;
 	filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+
+/* убираем рамку браузера при фокусировании */
+.Root:active {	
+	outline: none;
+  }
+.Root:focus {
+	outline: none;
+	outline-color: #c3c3c3;	
+	filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+
+
+.ButtonCalc:active {
+	outline: none;
+  }
+.ButtonCalc:focus {
+	outline: none;
+  }
+.ButtonCalc::-moz-focus-inner {
+	border: 0;
+  }
+/*-------------------------------------------*/
+
+
+.Box {
+    display: flex;
+    height: 50px;
+    width: 50px;
+    font-size: 36px;
+    align-items: center;
+	justify-content: center;
+    background-color: beige;
+  }
+
+
+.BoxEnd {
+	width: 100px;
 }
