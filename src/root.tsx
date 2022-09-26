@@ -26,16 +26,9 @@ type propHistoryElement = {
 };
 function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
 
-    
-
     useEffect(() => {
         console.log ("HistoryElement useEffect");
       }, [values,  callBack1, callBack2]
-    );
-
-    useLayoutEffect(() => {
-        console.log ("HistoryElement useLayoutEffect");        
-      }
     );
 
 	return (
@@ -46,8 +39,7 @@ function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
         }
         >  
             {
-                Array.from(values).map ((element, index) => {
-                    console.log("Draw HistoryElement");
+                Array.from(values).map ((element, index) => {                    
                     return (             
                         <Box 
                             key={index}
