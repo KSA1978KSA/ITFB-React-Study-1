@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import "./styles.css";
 
 
@@ -21,20 +21,33 @@ function Box ({symbol} : propBox) {
 //--- Компонент под список цифр
 type propHistoryElement = {
     values: string,
-    currentVal: string,
-    callBack(newVal:string) : any
+    callBack1(newVal:string, callBack2:React.Dispatch<React.SetStateAction<string>>) : any,
+    callBack2:React.Dispatch<React.SetStateAction<string>>
 };
-function HistoryElement ({values, currentVal, callBack} : propHistoryElement) {
+function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
+
+    
+
+    useEffect(() => {
+        console.log ("HistoryElement useEffect");
+      }, [values,  callBack1, callBack2]
+    );
+
+    useLayoutEffect(() => {
+        console.log ("HistoryElement useLayoutEffect");        
+      }
+    );
 
 	return (
         <div className='HistoryElement'
         onClick={()=>(            
-            callBack(currentVal + values)
+            callBack1(values, callBack2)
         )
         }
         >  
             {
                 Array.from(values).map ((element, index) => {
+                    console.log("Draw HistoryElement");
                     return (             
                         <Box 
                             key={index}
@@ -49,15 +62,55 @@ function HistoryElement ({values, currentVal, callBack} : propHistoryElement) {
 
 
     
-      
+let inputValueCallBack_link:React.Dispatch<React.SetStateAction<string>>;  
+let test_func_link: () => void;
+let getCurrentVal_link: () => string;
 
-  
+
+
+
+let inputValue_global:string = "";
+//--- делаем CallBack добавления значения из истории в текущую строку
+function addHistoryVal (val:string, inputValueCallBack:React.Dispatch<React.SetStateAction<string>>):void {
+    inputValueCallBack(inputValue_global + val);
+};
 
 function Root () {
 
     
+    
+
+    function test_func () {
+        console.log ("test_func");
+    }
+
+    if (!!test_func_link) {        
+        if (test_func_link===test_func) {
+            console.log ("Ссылка на test_func не меняется...");
+        }
+        else {
+            console.log ("Ссылка на test_func изменилась...");
+        }
+    }
+
+    test_func_link = test_func;
+
+
+    
     //---- Хук для ввода данных
     const [inputValue, inputValueCallBack] = useState("");
+    inputValue_global = inputValue;
+
+    if (!!inputValueCallBack_link) {        
+        if (inputValueCallBack_link===inputValueCallBack) {
+            console.log ("Ссылка на inputValueCallBack не меняется...");
+        }
+        else {
+            console.log ("Ссылка на inputValueCallBack изменилась...");
+        }
+    }
+
+    inputValueCallBack_link = inputValueCallBack;
 
     //---- Хук для результата данных
     const [resultValue, resultValueCallBack] = useState("");
@@ -65,6 +118,10 @@ function Root () {
     //---- Хук для истории результатов
     let arrHistory:string[] = [];
     const [historyValue, historyValueCallBack] = useState(arrHistory);
+
+
+
+    
 
 
     //--- функция-обработчик события нажатия кнопки на клавиатуре под DIV    
@@ -197,9 +254,9 @@ function Root () {
                             return (
                                 <HistoryElement 
                                     key={index}
-                                    values = {element}
-                                    currentVal = {inputValue}
-                                    callBack = {inputValueCallBack}
+                                    values = {element}                                    
+                                    callBack1 = {addHistoryVal}
+                                    callBack2 = {inputValueCallBack}                                    
                                 /> 
                             )
                             })                                                   
