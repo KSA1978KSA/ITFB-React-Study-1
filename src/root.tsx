@@ -26,10 +26,14 @@ type propHistoryElement = {
 };
 function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
 
+    console.log ("HistoryElement Шаг1");
+
     useEffect(() => {
-        console.log ("HistoryElement useEffect");
+        console.log ("HistoryElement Шаг2: произошли изменения в данных");
       }, [values,  callBack1, callBack2]
     );
+
+    console.log ("HistoryElement Шаг3");
 
 	return (
         <div className='HistoryElement'
