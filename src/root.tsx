@@ -24,7 +24,8 @@ type propHistoryElement = {
     callBack1(newVal:string, callBack2:React.Dispatch<React.SetStateAction<string>>) : any,
     callBack2:React.Dispatch<React.SetStateAction<string>>
 };
-function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
+
+function HistoryElement_forMemo ({values, callBack1, callBack2} : propHistoryElement) {
 
     console.log ("HistoryElement Шаг1");
 
@@ -56,6 +57,9 @@ function HistoryElement ({values, callBack1, callBack2} : propHistoryElement) {
 	)    
 }
 
+//--- мемоизируем для отслеживания изменения props
+let HistoryElement = React.memo (HistoryElement_forMemo);
+
 
     
 let inputValueCallBack_link:React.Dispatch<React.SetStateAction<string>>;  
@@ -70,6 +74,7 @@ let inputValue_global:string = "";
 function addHistoryVal (val:string, inputValueCallBack:React.Dispatch<React.SetStateAction<string>>):void {
     inputValueCallBack(inputValue_global + val);
 };
+
 
 function Root () {
 
@@ -252,7 +257,7 @@ function Root () {
                                     key={index}
                                     values = {element}                                    
                                     callBack1 = {addHistoryVal}
-                                    callBack2 = {inputValueCallBack}                                    
+                                    callBack2 = {inputValueCallBack}                                                                       
                                 /> 
                             )
                             })                                                   
