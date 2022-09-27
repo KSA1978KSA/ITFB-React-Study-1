@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import "./styles.css";
 
 
@@ -21,17 +21,20 @@ function Box ({symbol} : propBox) {
 //--- Компонент под список цифр
 type propHistoryElement = {
     values: string,
+    /*
     callBack1(newVal:string, callBack2:React.Dispatch<React.SetStateAction<string>>) : any,
     callBack2:React.Dispatch<React.SetStateAction<string>>
+    */
+    addHistoryVal(newVal:string) : void    
 };
 
-function HistoryElement_forMemo ({values, callBack1, callBack2} : propHistoryElement) {
+function HistoryElement_forMemo ({values, addHistoryVal} : propHistoryElement) {
 
     console.log ("HistoryElement Шаг1");
 
     useEffect(() => {
         console.log ("HistoryElement Шаг2: произошли изменения в данных");
-      }, [values,  callBack1, callBack2]
+      }, [values,  addHistoryVal]
     );
 
     console.log ("HistoryElement Шаг3");
@@ -39,7 +42,7 @@ function HistoryElement_forMemo ({values, callBack1, callBack2} : propHistoryEle
 	return (
         <div className='HistoryElement'
         onClick={()=>(            
-            callBack1(values, callBack2)
+            addHistoryVal(values)
         )
         }
         >  
@@ -61,13 +64,13 @@ function HistoryElement_forMemo ({values, callBack1, callBack2} : propHistoryEle
 let HistoryElement = React.memo (HistoryElement_forMemo);
 
 
-    
+/*--- 
 let inputValueCallBack_link:React.Dispatch<React.SetStateAction<string>>;  
 let test_func_link: () => void;
 let getCurrentVal_link: () => string;
 
 
-
+ракообразный метод избежания генерации функции как нового объекта
 
 let inputValue_global:string = "";
 //--- делаем CallBack добавления значения из истории в текущую строку
@@ -75,12 +78,13 @@ function addHistoryVal (val:string, inputValueCallBack:React.Dispatch<React.SetS
     inputValueCallBack(inputValue_global + val);
 };
 
+*/
 
 function Root () {
 
     
     
-
+    /*
     function test_func () {
         console.log ("test_func");
     }
@@ -95,11 +99,19 @@ function Root () {
     }
 
     test_func_link = test_func;
-
+    */
 
     
     //---- Хук для ввода данных
     const [inputValue, inputValueCallBack] = useState("");
+
+
+    //--- заворачиваем возврат текущей строки ввода в мемоизированную функцию
+    const addHistoryVal = useCallback ((val:string)=>{
+        inputValueCallBack(inputValue + val)
+    }, []);
+
+    /*
     inputValue_global = inputValue;
 
     if (!!inputValueCallBack_link) {        
@@ -109,9 +121,10 @@ function Root () {
         else {
             console.log ("Ссылка на inputValueCallBack изменилась...");
         }
-    }
+    }    
 
     inputValueCallBack_link = inputValueCallBack;
+    */
 
     //---- Хук для результата данных
     const [resultValue, resultValueCallBack] = useState("");
@@ -256,8 +269,7 @@ function Root () {
                                 <HistoryElement 
                                     key={index}
                                     values = {element}                                    
-                                    callBack1 = {addHistoryVal}
-                                    callBack2 = {inputValueCallBack}                                                                       
+                                    addHistoryVal = {addHistoryVal}                                                                                                       
                                 /> 
                             )
                             })                                                   
