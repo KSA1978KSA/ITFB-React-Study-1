@@ -106,7 +106,8 @@ function Root () {
     const [inputValue, inputValueCallBack] = useState("");
 
 
-    //--- заворачиваем возврат текущей строки ввода в мемоизированную функцию
+    //--- заворачиваем возврат текущей строки ввода в мемоизированную функцию через useCallback
+    //--- нужно для того чтобы мемоизированная компонента проверяли props перед ре-рендерингом
     const addHistoryVal = useCallback ((val:string)=>{
         inputValueCallBack(inputValue + val)
     }, []);
